@@ -26,16 +26,19 @@ class MailOutboxFactory extends Factory
 
         return [
             'to_email' => $this->faker->unique()->safeEmail(),
-            'subject'  => $this->faker->boolean(80) ? $this->faker->sentence(4) : null,
-            'body'     => $this->faker->paragraphs(2, true),
+            'subject'  => $this->faker->boolean(80) ? $this->jaSubject() : null, // ← 変更
+            'body'     => $this->jaBody(),                                       // ← 変更
             'status'   => $status,
             'queued_at'=> $queued,
             'sent_at'  => $sent,
             'failed_at'=> $failed,
-            'fail_reason' => $status==='failed' ? $this->faker->randomElement(['SMTP 550','Timeout','Auth error']) : null,
+            'fail_reason' => $status==='failed'
+                ? $this->faker->randomElement(['SMTP 550','Timeout','Auth error'])
+                : null,
             'provider_message_id' => $status==='sent' ? $this->faker->uuid() : null,
             'provider_meta' => $status==='sent' ? ['relay'=>'mailpit','attempts'=>1] : null,
         ];
+
     }
 
     public function draft(): static {
@@ -84,6 +87,40 @@ class MailOutboxFactory extends Factory
             'provider_message_id' => null,
             'provider_meta' => null,
         ]);
+    }
+
+        protected function jaSubject(): string
+    {
+        $f = $this->faker;
+        return $f->randomElement([
+            '【重要】パスワード再設定のご案内',
+            "【至急】ご確認ください：請求書 No.{$f->numberBetween(1000,9999)}",
+            '見積書送付の件',
+            '打ち合わせ日程のご相談',
+            'ミーティングのリマインド（'.$f->date('n/j').'）',
+            'ご注文ありがとうございます（注文番号：'.$f->bothify('????-#####').'）',
+            '新機能リリースのお知らせ',
+            '採用面談のご連絡（'.$f->date('n/j H:i').'）',
+        ]);
+    }
+
+    protected function jaBody(): string
+    {
+        $f = $this->faker;
+        $lines = [
+            "お世話になっております。{$f->company()}の{$f->lastName()}です。",
+            '下記の件につきましてご連絡いたしました。',
+            '・内容：ご確認事項の共有',
+            '・期日：'.$f->date('Y/m/d')."（".$f->randomElement(['月','火','水','木','金'])."）",
+            '',
+            'ご不明点がございましたら、本メールへご返信ください。',
+            '引き続きよろしくお願いいたします。',
+            '',
+            $f->company(),
+            $f->lastName().' '.$f->firstName(),
+            'TEL: 0'.$f->numerify('##-####-####'),
+        ];
+        return implode("\n", $lines);
     }
 
 }
