@@ -26,7 +26,7 @@ return new class extends Migration {
             $t->index(['to_email','subject']);
         });
     }
-    public function down(): void 
+    public function down(): void
     {
         Schema::dropIfExists('mail_outbox');
     }
