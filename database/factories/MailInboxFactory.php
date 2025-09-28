@@ -24,4 +24,11 @@ class MailInboxFactory extends Factory
             'is_read'     => $this->faker->boolean(40),
         ];
     }
+
+    public function unread(){
+        return $this->state(fn()=>['is_read'=>false]);
+    }
+    public function read(){
+        return $this->state(fn()=>['is_read'=>true]);
+    }
 }
