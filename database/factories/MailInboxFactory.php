@@ -17,7 +17,11 @@ class MailInboxFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'from_email'=>$this->faker->safeEmail(),
+            'subject'     => $this->faker->boolean(85) ? $this->faker->sentence(5) : null,
+            'body'        => $this->faker->paragraphs(2, true),
+            'received_at' => $this->faker->dateTimeBetween('-14 days','now'),
+            'is_read'     => $this->faker->boolean(40),
         ];
     }
 }
