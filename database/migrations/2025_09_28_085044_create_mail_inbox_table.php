@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('mail_inbox', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('')
             $table->timestamps();
         });
     }
