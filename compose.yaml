@@ -58,7 +58,7 @@ services:
             - "5050:80"
         depends_on:
             - pgsql
-
+        networks: [sail]
 networks:
     sail:
         driver: bridge
