@@ -37,4 +37,53 @@ class MailOutboxFactory extends Factory
             'provider_meta' => $status==='sent' ? ['relay'=>'mailpit','attempts'=>1] : null,
         ];
     }
+
+    public function draft(): static {
+        return $this->state(fn () => [
+            'status' => 'draft',
+            'queued_at' => null,
+            'sent_at' => null,
+            'failed_at' => null,
+            'fail_reason' => null,
+            'provider_message_id' => null,
+            'provider_meta' => null,
+        ]);
+    }
+
+    public function queued(): static {
+        return $this->state(fn () => [
+            'status' => 'queued',
+            'queued_at' => now(),
+            'sent_at' => null,
+            'failed_at' => null,
+            'fail_reason' => null,
+            'provider_message_id' => null,
+            'provider_meta' => null,
+        ]);
+    }
+
+    public function sent(): static {
+        return $this->state(fn () => [
+            'status' => 'sent',
+            'queued_at' => now()->subMinutes(5),
+            'sent_at' => now(),
+            'failed_at' => null,
+            'fail_reason' => null,
+            'provider_message_id' => $this->faker->uuid(),
+            'provider_meta' => ['relay'=>'mailpit','attempts'=>1],
+        ]);
+    }
+
+    public function failed(): static {
+        return $this->state(fn () => [
+            'status' => 'failed',
+            'queued_at' => now()->subMinutes(5),
+            'sent_at' => null,
+            'failed_at' => now(),
+            'fail_reason' => 'SMTP 550',
+            'provider_message_id' => null,
+            'provider_meta' => null,
+        ]);
+    }
+
 }
