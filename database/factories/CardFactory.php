@@ -17,7 +17,9 @@ class CardFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title'       => $this->faker->sentence(3),
+            'description' => $this->faker->boolean(70) ? $this->faker->paragraph() : null,
+            'is_archived' => false,
         ];
     }
 }
