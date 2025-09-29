@@ -34,4 +34,9 @@ class OutboxController extends Controller
         $outbox->delete();
         return back()->with('ok','削除しました');
     }
+
+    public function show(MailOutbox $outbox)
+    {
+        return view('mail.outbox-show', compact('outbox'));
+    }
 }
