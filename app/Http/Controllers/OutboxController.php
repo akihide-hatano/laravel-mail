@@ -29,7 +29,7 @@ class OutboxController extends Controller
         return back()->with('ok', '送信キューに登録しました');
     }
 
-    public function destory(MailOutbox $outbox){
+    public function destroy(MailOutbox $outbox){
 
         $outbox->delete();
         return back()->with('ok','削除しました');
