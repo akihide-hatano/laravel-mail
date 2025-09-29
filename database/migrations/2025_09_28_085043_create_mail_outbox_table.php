@@ -17,6 +17,7 @@ return new class extends Migration {
             $t->timestamp('queued_at')->nullable();
             $t->timestamp('sent_at')->nullable();
             $t->timestamp('failed_at')->nullable();
+            $t->softDeletes();
             $t->string('fail_reason', 191)->nullable();
             // 追跡用（任意の外部ID等）
             $t->string('provider_message_id')->nullable();

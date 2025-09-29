@@ -16,8 +16,8 @@ return new class extends Migration {
             $t->timestamp('received_at')->nullable()->index();
             // 将来のラベル/既読フラグ（拡張しやすいよう最低限）
             $t->boolean('is_read')->default(false)->index();
+            $t->softDeletes();
             $t->timestamps();
-
             $t->index(['from_email','subject']);
         });
     }
