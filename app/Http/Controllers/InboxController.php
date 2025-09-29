@@ -1,20 +1,36 @@
-<?php
-
+<?php 
+// app/Http/Controllers/InboxController.php
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInboxRequest;
 use App\Models\MailInbox;
+use Illuminate\Http\Request;
 
 class InboxController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $items = MailInbox::query()->latest('received_at')->latest()->paginate(10);
+        $q = MailInbox::query()->latest('received_at');
+
+        // 検索（件名・差出人）
+        if ($s = $request->string('s')->toString()) {
+            $q->where(fn($q) =>
+                $q->where('subject','like',"%{$s}%")
+                  ->orWhere('from_email','like',"%{$s}%")
+            );
+        }
+
+        // ごみ箱も含めて見たい場合（?withTrashed=1）
+        if ($request->boolean('withTrashed')) {
+            $q->withTrashed();
+        }
+
+        $items = $q->paginate(10)->withQueryString();
         return view('mail.inbox', compact('items'));
     }
 
-    // 疑似受信
-    public function receive(StoreInboxRequest $request)
+    // 疑似受信（resourceの store）
+    public function store(StoreInboxRequest $request)
     {
         $data = $request->validated();
 
@@ -29,11 +45,34 @@ class InboxController extends Controller
         return back()->with('ok', '受信BOXに保存しました');
     }
 
-    public function toggleRead(MailInbox $inbox)
+    // 既読切替（resourceの update）
+    public function update(Request $request, MailInbox $inbox)
     {
         $inbox->is_read = ! $inbox->is_read;
         $inbox->save();
-
         return back()->with('ok', '既読フラグを切り替えました');
+    }
+
+    public function destroy(MailInbox $inbox)
+    {
+        $inbox->delete(); // SoftDelete
+        return back()->with('ok', '削除（ごみ箱へ移動）しました');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (!empty($ids)) {
+            MailInbox::whereIn('id', $ids)->delete();
+        }
+        return back()->with('ok', '選択したデータを削除しました');
+    }
+
+    // 復元（withTrashed→restore）
+    public function restore($id)
+    {
+        $row = MailInbox::withTrashed()->findOrFail($id);
+        $row->restore();
+        return back()->with('ok', '復元しました');
     }
 }
