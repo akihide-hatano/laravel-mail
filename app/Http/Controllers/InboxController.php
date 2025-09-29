@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/InboxController.php
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInboxRequest;
@@ -26,13 +25,13 @@ class InboxController extends Controller
         }
 
         $items = $q->paginate(10)->withQueryString();
-        return view('mail.inbox', compact('items'));
+        return view('inbox.index', compact('items'));
     }
 
     public function show(MailInbox $inbox){
         // 削除済みも表示したいなら下記に変更：
         // $inbox = MailInbox::withTrashed()->findOrFail($inbox->id);
-        return view('mail.inbox-show', compact('inbox'));
+        return view('indox.show', compact('inbox'));
     }
 
     // 疑似受信（resourceの store）
