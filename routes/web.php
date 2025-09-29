@@ -20,15 +20,22 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->prefix('mail')->name('mail.')->group(function () {
-    // Outbox
-    Route::resource('outbox', OutboxController::class)->only(['index','store','destroy'])->names('outbox');
+    // Outbox: resource本体
+    Route::resource('outbox', OutboxController::class)
+        ->only(['index','store','destroy'])
+        ->names('outbox');
 
-    // Inbox ← store / update を使用
-    Route::resource('inbox', InboxController::class)->only(['index','store','update','destroy'])->names('inbox');
+    // ★ Outbox: 一括削除（/mail/outbox に DELETE）
+    Route::delete('outbox', [OutboxController::class, 'bulkDestroy'])
+        ->name('outbox.bulk-destroy');
 
-    // カスタムは一旦ナシ（必要なら後で追加）
-    // Route::delete('inbox', [InboxController::class, 'bulkDestroy'])->name('inbox.bulk-destroy');
-    // Route::post('inbox/{inbox}/restore', [InboxController::class, 'restore'])->name('inbox.restore');
+    // Inbox: （すでにあるやつ）
+    Route::resource('inbox', InboxController::class)
+        ->only(['index','store','update','destroy'])
+        ->names('inbox');
+
+    Route::delete('inbox', [InboxController::class, 'bulkDestroy'])->name('inbox.bulk-destroy');
+    Route::post('inbox/{inbox}/restore', [InboxController::class, 'restore'])->name('inbox.restore');
 });
 
 require __DIR__.'/auth.php';
