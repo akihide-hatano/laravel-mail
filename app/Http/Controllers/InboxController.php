@@ -1,4 +1,4 @@
-<?php 
+<?php
 // app/Http/Controllers/InboxController.php
 namespace App\Http\Controllers;
 
@@ -16,7 +16,7 @@ class InboxController extends Controller
         if ($s = $request->string('s')->toString()) {
             $q->where(fn($q) =>
                 $q->where('subject','like',"%{$s}%")
-                  ->orWhere('from_email','like',"%{$s}%")
+                ->orWhere('from_email','like',"%{$s}%")
             );
         }
 
@@ -27,6 +27,12 @@ class InboxController extends Controller
 
         $items = $q->paginate(10)->withQueryString();
         return view('mail.inbox', compact('items'));
+    }
+
+    public function show(MailInbox $in){
+        // 削除済みも表示したいなら下記に変更：
+        // $inbox = MailInbox::withTrashed()->findOrFail($inbox->id);
+        return view('mail.inbox-show', compact('inbox'));
     }
 
     // 疑似受信（resourceの store）
