@@ -18,7 +18,6 @@ class InboxController extends Controller
                 ->orWhere('from_email','like',"%{$s}%")
             );
         }
-
         // ごみ箱も含めて見たい場合（?withTrashed=1）
         if ($request->boolean('withTrashed')) {
             $q->withTrashed();
@@ -31,7 +30,7 @@ class InboxController extends Controller
     public function show(MailInbox $inbox){
         // 削除済みも表示したいなら下記に変更：
         // $inbox = MailInbox::withTrashed()->findOrFail($inbox->id);
-        return view('indox.show', compact('inbox'));
+        return view('inbox.show', compact('inbox'));
     }
 
     // 疑似受信（resourceの store）
@@ -47,7 +46,7 @@ class InboxController extends Controller
             'is_read'     => false,
         ]);
 
-        return redirect()->route('mail.indox.index')->with('ok', '受信BOXに保存しました');
+        return redirect()->route('mail.inbox.index')->with('ok', '受信BOXに保存しました');
     }
 
     // 既読切替（resourceの update）
@@ -61,7 +60,7 @@ class InboxController extends Controller
     public function destroy(MailInbox $inbox)
     {
         $inbox->delete(); // SoftDelete
-        return back()->route('mail.inbox.index')->with('ok', '削除（ごみ箱へ移動）しました');
+        return redirect()->route('mail.inbox.index')->with('ok', '削除（ごみ箱へ移動）しました');
     }
 
     public function bulkDestroy(Request $request)
