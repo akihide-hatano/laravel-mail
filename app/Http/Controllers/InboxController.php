@@ -47,7 +47,7 @@ class InboxController extends Controller
             'is_read'     => false,
         ]);
 
-        return back()->with('ok', '受信BOXに保存しました');
+        return redirect()->route('mail.indox.index')->with('ok', '受信BOXに保存しました');
     }
 
     // 既読切替（resourceの update）
@@ -55,13 +55,13 @@ class InboxController extends Controller
     {
         $inbox->is_read = ! $inbox->is_read;
         $inbox->save();
-        return back()->with('ok', '既読フラグを切り替えました');
+        return redirect()->route('mail.inbox.index')->with('ok', '既読フラグを切り替えました');
     }
 
     public function destroy(MailInbox $inbox)
     {
         $inbox->delete(); // SoftDelete
-        return back()->with('ok', '削除（ごみ箱へ移動）しました');
+        return back()->route('mail.inbox.index')->with('ok', '削除（ごみ箱へ移動）しました');
     }
 
     public function bulkDestroy(Request $request)
