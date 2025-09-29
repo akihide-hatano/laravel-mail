@@ -11,7 +11,7 @@ class StoreOutboxRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreOutboxRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'to_email' => ['required','email'],
+            'subject'  => ['nullable','string','max:255'],
+            'body'     => ['nullable','string'],
         ];
     }
 }
