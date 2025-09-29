@@ -20,20 +20,15 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->prefix('mail')->name('mail.')->group(function () {
-    // Outbox (index, store, destroyを定義)
-    Route::resource('outbox', OutboxController::class)->only([
-        'index', 'store', 'destroy'
-    ]);
+    // Outbox
+    Route::resource('outbox', OutboxController::class)->only(['index','store','destroy'])->names('outbox');
 
-    // Inbox (indexを定義)
-    Route::resource('inbox', InboxController::class)->only([
-        'index'
-    ]);
+    // Inbox ← store / update を使用
+    Route::resource('inbox', InboxController::class)->only(['index','store','update','destroy'])->names('inbox');
 
-    // Inboxのカスタムアクション
-    // Route::resourceの外に定義することで、カスタムアクションとして維持
-    Route::post('/inbox/receive', [InboxController::class, 'receive'])->name('inbox.receive'); // 疑似受信
-    Route::patch('/inbox/{inbox}/toggle-read', [InboxController::class, 'toggleRead'])->name('inbox.toggle');
+    // カスタムは一旦ナシ（必要なら後で追加）
+    // Route::delete('inbox', [InboxController::class, 'bulkDestroy'])->name('inbox.bulk-destroy');
+    // Route::post('inbox/{inbox}/restore', [InboxController::class, 'restore'])->name('inbox.restore');
 });
 
 require __DIR__.'/auth.php';
