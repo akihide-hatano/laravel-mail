@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->prefix('mail')->name('mail.')->group(function () {
     // Outbox: resource本体
     Route::resource('outbox', OutboxController::class)
-        ->only(['index','store','destroy'])
+        ->only(['index','store','show','destroy'])
         ->names('outbox');
 
     // ★ Outbox: 一括削除（/mail/outbox に DELETE）
@@ -31,7 +31,7 @@ Route::middleware('auth')->prefix('mail')->name('mail.')->group(function () {
 
     // Inbox: （すでにあるやつ）
     Route::resource('inbox', InboxController::class)
-        ->only(['index','store','update','destroy'])
+        ->only(['index','store','show','update','destroy'])
         ->names('inbox');
 
     Route::delete('inbox', [InboxController::class, 'bulkDestroy'])->name('inbox.bulk-destroy');
