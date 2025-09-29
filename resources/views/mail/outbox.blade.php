@@ -46,7 +46,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($items as $row)
+                    @if ($items->isEmpty()){
+                        <tr>
+                            <td colspan="6" class="p-4 text-center text-gray-500">
+                                メールがありません
+                            </td>
+                        </tr>
+                    }
+                    @else
+                        @foreach($items as $row)
                         <tr class="border-b">
                             <td class="p-2">
                                 <input type="checkbox" name="ids[]" value="{{ $row->id }}" class="row-check">
@@ -62,7 +70,8 @@
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                        @endforeach
+                    @endif
                     </tbody>
                 </table>
 
