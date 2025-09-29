@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MailOutbox extends Model
 {
     /** @use HasFactory<\Database\Factories\MailOutboxFactory> */
     use HasFactory;
+    use SoftDeletes; // ← 追加
 
     protected $table = 'mail_outbox';
 
