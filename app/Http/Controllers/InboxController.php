@@ -29,7 +29,7 @@ class InboxController extends Controller
         return view('mail.inbox', compact('items'));
     }
 
-    public function show(MailInbox $in){
+    public function show(MailInbox $inbox){
         // 削除済みも表示したいなら下記に変更：
         // $inbox = MailInbox::withTrashed()->findOrFail($inbox->id);
         return view('mail.inbox-show', compact('inbox'));
