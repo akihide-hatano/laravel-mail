@@ -35,4 +35,35 @@ class OutboxControllerTest extends TestCase
 
         $this->assertDatabaseHas('mail_outbox', ['to_email'=>'bar@example.com','status'=>'queued']);
     }
+
+    public function test_edit_update_destroy(): void
+    {
+        $user = User::factory()->create();
+        $row  = MailOutbox::factory()->create(['status' => 'draft']);
+
+        // edit
+        $this->actingAs($user)->get(route('mail.outbox.edit', $row))->assertOk();
+
+        // update
+        $this->actingAs($user)
+            ->patch(route('mail.outbox.update', $row), [
+                'to_email' => 'baz@example.com',
+                'subject'  => '更新件名',
+                'body'     => '更新本文',
+                'status'   => 'queued',
+            ])->assertRedirect(route('mail.outbox.show', $row));
+
+        $this->assertDatabaseHas('mail_outbox', [
+            'id'       => $row->id,
+            'to_email' => 'baz@example.com',
+            'status'   => 'queued',
+        ]);
+
+        // destroy
+        $this->actingAs($user)
+            ->delete(route('mail.outbox.destroy', $row))
+            ->assertRedirect(route('mail.outbox.index'));
+
+        $this->assertDatabaseMissing('mail_outbox', ['id' => $row->id]);
+    }
 }
