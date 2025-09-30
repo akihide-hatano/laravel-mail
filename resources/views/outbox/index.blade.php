@@ -80,7 +80,7 @@
                         </td>
 
                         <td class="p-0">
-                            <a href="{{ route('mail.outbox.show',$row)}}">
+                            <a href="{{ route('mail.outbox.show',$row)}}" class="{{ $row->status->colorClasses() }}">
                                 {{ $row->status->label() }}
                             </a>
                         </td>
