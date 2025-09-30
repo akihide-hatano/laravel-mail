@@ -2,11 +2,6 @@
     <x-slot name="header"><h2 class="font-semibold text-xl">送信BOX</h2></x-slot>
 
     <div class="max-w-4xl mx-auto p-4 space-y-6">
-        @if(session('ok'))
-            <div class="mb-4 rounded border border-green-200 bg-green-50 p-3 text-green-800">
-                {{ session('ok') }}
-            </div>
-        @endif
 
         {{-- キュー登録フォーム --}}
         <form method="POST" action="{{ route('mail.outbox.store') }}" class="space-y-3">
