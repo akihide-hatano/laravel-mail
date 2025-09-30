@@ -42,7 +42,7 @@
                     <thead>
                         <tr>
                             <th class="p-2"><input type="checkbox" id="checkAll"></th>
-                            <th>ID</th><th>宛先</th><th>件名</th><th>ステータス</th><th></th>
+                            <th>ID</th><th>宛先</th><th>件名</th><th>ステータス</th><th class="w-40 text-center">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,7 +56,7 @@
                     @else
                         @foreach($items as $row)
                         <tr class="border-b">
-                            <td class="p-2">
+                            <td class="p-2 whitespace-nowra">
                                 <input type="checkbox" name="ids[]" value="{{ $row->id }}" class="row-check">
                             </td>
                             <td class="p-2">{{ $row->id }}</td>
@@ -64,10 +64,13 @@
                             <td class="p-2">{{ $row->subject }}</td>
                             <td class="p-2">{{ $row->status }}</td>
                             <td class="p-2">
-                                <form method="POST" action="{{ route('mail.outbox.destroy', $row) }}">
-                                    @csrf @method('DELETE')
-                                    <x-danger-button>削除</x-danger-button>
-                                </form>
+                                <div class="flex items-center gap-2">
+                                    <a href="{{route('mail.outbox.show',$row)}}" class="px-3 py-2 bg-blue-600 hover:bg-blue-400 rounded">詳細</a>
+                                    <form method="POST" action="{{ route('mail.outbox.destroy', $row) }}">
+                                        @csrf @method('DELETE')
+                                        <x-danger-button class="px-3 py-2 text-sm">削除</x-danger-button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
