@@ -64,6 +64,6 @@ class OutboxControllerTest extends TestCase
             ->delete(route('mail.outbox.destroy', $row))
             ->assertRedirect(route('mail.outbox.index'));
 
-        $this->assertDatabaseMissing('mail_outbox', ['id' => $row->id]);
+        $this->assertSoftDeleted('mail_outbox', ['id' => $row->id]);
     }
 }
