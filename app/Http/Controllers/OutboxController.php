@@ -26,17 +26,17 @@ class OutboxController extends Controller
         ]);
 
         // まずは保存のみ（送信は後で queue を差し込む）
-        return back()->with('ok', '送信キューに登録しました');
+        return redirect()->route('outbox.index')->with('ok', '送信キューに登録しました');
     }
-
+    
+    public function show(MailOutbox $outbox)
+    {
+        return view('outbox.show', compact('outbox'));
+    }
     public function destroy(MailOutbox $outbox){
 
         $outbox->delete();
-        return back()->with('ok','削除しました');
+        return redirect()->route('outbox.show')->with('ok','削除しました');
     }
 
-    public function show(MailOutbox $outbox)
-    {
-        return view('mail.outbox-show', compact('outbox'));
-    }
 }
