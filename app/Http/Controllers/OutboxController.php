@@ -10,7 +10,7 @@ class OutboxController extends Controller
 {
     public function index(){
         $items = MailOutbox::query()->latest()->paginate(10);
-        return view('mail.outbox',compact('items'));
+        return view('outbox.index',compact('items'));
     }
 
     public function store(StoreOutboxRequest $request){
