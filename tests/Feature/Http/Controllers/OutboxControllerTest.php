@@ -29,11 +29,16 @@ class OutboxControllerTest extends TestCase
 
         $this->actingAs($user)
             ->from(route('mail.outbox.index'))
-            ->post(route('mail.outbox.store'), $payload)   // ← store にPOST & payloadを渡す
-            ->assertRedirect(route('mail.outbox.index'))   // ← 期待通り index へ
-            ->assertSessionHasNoErrors();
+            ->post(route('mail.outbox.store'), $payload)
+            ->assertRedirect(route('mail.outbox.index'))
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('ok','送信キューに登録しました');
 
         $this->assertDatabaseHas('mail_outbox', ['to_email'=>'bar@example.com','status'=>'queued']);
+
+        // queued_at が入っていることも確認
+        $row = MailOutbox::firstWhere('to_email', 'bar@example.com');
+        $this->assertNotNull($row->queued_at);
     }
 
     public function test_edit_update_destroy(): void
