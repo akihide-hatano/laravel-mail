@@ -57,4 +57,17 @@ class InboxControllerTest extends TestCase
 
         $this->assertTrue($row->fresh()->is_read);
     }
+
+    public function test_destroy_soft_deletes():void{
+
+        $user = User::factory()->create();
+        $row = MailInbox::factory()->create();
+
+        $this->actingAs($user)
+                ->delete(route('mail.inbox.destroy',$row))
+                ->assertRedirect(route('mail.inbox.index'));
+
+        $this->assertSoftDeleted('mail_inbox',['id'=>$row->id]);
+
+    }
 }
