@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->prefix('mail')->name('mail.')->group(function () {
     // Outbox: resource本体
     Route::resource('outbox', OutboxController::class)
-        ->only(['index','store','show','edit','update','destroy'])
+        ->only(['index','create','store','show','edit','update','destroy'])
         ->names('outbox');
 
     // ★ Outbox: 一括削除（/mail/outbox に DELETE）
