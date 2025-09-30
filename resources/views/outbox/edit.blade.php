@@ -41,8 +41,8 @@
           </div>
 
           <div class="flex gap-2">
-            <a href="{{ route('mail.outbox.show', $outbox) }}" class="px-4 py-2 border rounded">キャンセル</a>
-            <button class="px-4 py-2 bg-blue-600 text-white rounded">保存</button>
+            <a href="{{ route('mail.outbox.show', $outbox) }}" class="px-4 py-2 border rounded hover:bg-gray-300">キャンセル</a>
+            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-800 text-white rounded">保存</button>
           </div>
         </form>
       </div>
