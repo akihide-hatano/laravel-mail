@@ -65,10 +65,10 @@
                             <td class="p-2">{{ $row->status }}</td>
                             <td class="p-2">
                                 <div class="flex items-center gap-2">
-                                    <a href="{{route('mail.outbox.show',$row)}}" class="px-3 py-2 bg-blue-600 hover:bg-blue-400 rounded">詳細</a>
+                                    <a href="{{route('mail.outbox.show',$row)}}" class="px-3 py-2 bg-blue-600 hover:bg-blue-400 rounded text-white">詳細</a>
                                     <form method="POST" action="{{ route('mail.outbox.destroy', $row) }}">
                                         @csrf @method('DELETE')
-                                        <x-danger-button class="px-3 py-2 text-sm">削除</x-danger-button>
+                                        <x-danger-button class="px-3 py-2">削除</x-danger-button>
                                     </form>
                                 </div>
                             </td>
