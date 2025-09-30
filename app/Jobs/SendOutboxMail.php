@@ -2,29 +2,46 @@
 
 namespace App\Jobs;
 
-use Illuminate\Contracts\Queue\ShouldQueue;    // ★ これが必要
-use Illuminate\Foundation\Bus\Dispatchable;    // ★ これが必要
-use Illuminate\Queue\InteractsWithQueue;       // ★ これが必要
-use Illuminate\Queue\SerializesModels;         // ★ これが必要
-use Illuminate\Foundation\Queue\Queueable;
+use App\Models\MailOutbox;
+use Illuminate\Bus\Queueable;                  // ← ここが正
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class SendOutboxMail implements ShouldQueue
 {
-
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    /**
-     * Create a new job instance.
-     */
-    public function __construct()
-    {
-        //
-    }
 
-    /**
-     * Execute the job.
-     */
+    public int $tries = 3;
+    public int $backoff = 30;
+
+    public function __construct(public int $outboxId) {}
+
     public function handle(): void
     {
-        //
+        $row = MailOutbox::findOrFail($this->outboxId);
+
+        try {
+            Mail::raw($row->body ?? '(no body)', fn ($m) =>
+                $m->to($row->to_email)->subject($row->subject ?? '(no subject)')
+            );
+
+            $row->update([
+                'status'      => 'sent',
+                'sent_at'     => now(),
+                'failed_at'   => null,
+                'fail_reason' => null,
+            ]);
+        } catch (Throwable $e) {
+            $row->update([
+                'status'      => 'failed',
+                'failed_at'   => now(),
+                'fail_reason' => substr($e->getMessage(), 0, 180),
+            ]);
+            throw $e;
+        }
     }
 }
