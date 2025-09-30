@@ -15,13 +15,6 @@ class InboxControllerTest extends TestCase
     */
     use RefreshDatabase;
 
-    public function test_example(): void
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
     public function test_requires_auth():void{
         $this->get('/mail/inbox')->assertRedirect('/login');
     }
@@ -68,6 +61,5 @@ class InboxControllerTest extends TestCase
                 ->assertRedirect(route('mail.inbox.index'));
 
         $this->assertSoftDeleted('mail_inbox',['id'=>$row->id]);
-
     }
 }
