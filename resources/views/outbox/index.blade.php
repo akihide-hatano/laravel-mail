@@ -54,26 +54,57 @@
                         </tr>
                     }
                     @else
-                        @foreach($items as $row)
-                        <tr class="border-b">
-                            <td class="p-2 whitespace-nowra">
-                                <input type="checkbox" name="ids[]" value="{{ $row->id }}" class="row-check">
-                            </td>
-                            <td class="p-2">{{ $row->id }}</td>
-                            <td class="p-2">{{ $row->to_email }}</td>
-                            <td class="p-2">{{ $row->subject }}</td>
-                            <td class="p-2">{{ $row->status }}</td>
-                            <td class="p-2">
-                                <div class="flex items-center gap-2">
-                                    <a href="{{route('mail.outbox.show',$row)}}" class="px-3 py-2 bg-blue-600 hover:bg-blue-400 rounded text-white">詳細</a>
-                                    <form method="POST" action="{{ route('mail.outbox.destroy', $row) }}">
-                                        @csrf @method('DELETE')
-                                        <x-danger-button class="px-3 py-2">削除</x-danger-button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
+                    @foreach($items as $row)
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-2 whitespace-nowrap">
+                            <input type="checkbox" name="ids[]" value="{{ $row->id }}" class="row-check">
+                        </td>
+
+                        {{-- IDセル丸ごとクリック可能 --}}
+                        <td class="p-0">
+                            <a href="{{ route('mail.outbox.show', $row) }}"
+                            class="block px-2 py-2">
+                                {{ $row->id }}
+                            </a>
+                        </td>
+
+                        {{-- 宛先セルもクリック可能 --}}
+                        <td class="p-0">
+                            <a href="{{ route('mail.outbox.show', $row) }}"
+                            class="block px-2 py-2 truncate">
+                                {{ $row->to_email }}
+                            </a>
+                        </td>
+
+                        {{-- 件名セルもクリック可能 --}}
+                        <td class="p-0">
+                            <a href="{{ route('mail.outbox.show', $row) }}"
+                            class="block px-2 py-2 truncate">
+                                {{ $row->subject }}
+                            </a>
+                        </td>
+
+                        <td class="p-0">
+                            <a href="{{ route('mail.outbox.show',$row)}}">
+                                {{ $row->status }}
+                            </a>
+                        </td>
+                        <td class="p-2 whitespace-nowrap text-right w-40">
+                            <div class="inline-flex items-center gap-2">
+                                <a href="{{ route('mail.outbox.show',$row) }}"
+                                class="inline-flex items-center px-3 py-2 text-sm rounded bg-blue-600 text-white hover:bg-blue-500">
+                                    詳細
+                                </a>
+                                <form method="POST" action="{{ route('mail.outbox.destroy', $row) }}" class="inline-block"
+                                    onsubmit="return confirm('削除しますか？');">
+                                    @csrf @method('DELETE')
+                                    <x-danger-button class="px-3 py-2 text-sm">削除</x-danger-button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+
                     @endif
                     </tbody>
                 </table>
