@@ -21,4 +21,28 @@ class InboxControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_requires_auth():void{
+        $this->get('/mail/inbox')->assertRedirect('/login');
+    }
+
+    public function test_store_creates_record_and_redirects(): void{
+        $user = User::factory()->create();
+
+        $payload = [
+            'from_email' => 'foo@example.com',
+            'subject'    => 'テスト件名',
+            'body'       => '本文',
+        ];
+
+        $this->actingAs($user)
+                ->post(route('mail.inbox.store'),$payload)
+                ->assertRedirect(route('mail.inbox.index'));
+
+        $this->assertDatabaseHas('mail_inbox',[
+            'from_email' => 'foo@example.com',
+            'subject'    => 'テスト件名',
+            'is_read'    => 0,
+        ]);
+    }
 }
