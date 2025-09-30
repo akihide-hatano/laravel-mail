@@ -44,7 +44,15 @@ class OutboxController extends Controller
     }
 
     public function update(Request $request,MailOutbox $outbox){
-        $outbox->fill($request->validated())->save();
+    
+    $data = $request->validate([
+        'to_email' => ['required','email'],
+        'subject'  => ['nullable','string','max:255'],
+        'body'     => ['nullable','string'],
+        'status'   => ['required','in:draft,queued,sent,failed'],
+    ]);
+
+        $outbox->fill($data)->save();
         return to_route('mail.outbox.show',$outbox)->with('ok','更新しました');
     }
 }
