@@ -2,13 +2,16 @@
 
 namespace App\Jobs;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;    // ★ これが必要
+use Illuminate\Foundation\Bus\Dispatchable;    // ★ これが必要
+use Illuminate\Queue\InteractsWithQueue;       // ★ これが必要
+use Illuminate\Queue\SerializesModels;         // ★ これが必要
 use Illuminate\Foundation\Queue\Queueable;
 
 class SendOutboxMail implements ShouldQueue
 {
-    use Queueable;
 
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     /**
      * Create a new job instance.
      */
