@@ -38,4 +38,12 @@ class OutboxController extends Controller
         $outbox->delete();
         return to_route('mail.outbox.index')->with('ok', '削除しました');
     }
+
+    public function edit(MailOutbox $outbox){
+        return view('outbox.edit',compact('outbox'));
+    }
+
+    public function update(Request $request,MailOutbox $outbox){
+        
+    }
 }
