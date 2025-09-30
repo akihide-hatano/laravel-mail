@@ -22,4 +22,17 @@ class OutboxControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user)->get('/mail/outbox')->assertOk();
     }
+
+    public function test_store_queues_and_redirect():void{
+        $user = User::factory()->create();
+        $payload= ['to_email'=>'bar@example.com','subject'=>'送信テスト','body'=>'本文'];
+
+        $this->actingAs($user)
+            ->from(route('mail.outbox.index'))
+            ->post(route('mail.outbox.store'), $payload)   // ← store にPOST & payloadを渡す
+            ->assertRedirect(route('mail.outbox.index'))   // ← 期待通り index へ
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('mail_outbox', ['to_email'=>'bar@example.com','status'=>'queued']);
+    }
 }

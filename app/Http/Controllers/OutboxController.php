@@ -26,7 +26,7 @@ class OutboxController extends Controller
         ]);
 
         // まずは保存のみ（送信は後で queue を差し込む）
-        return redirect()->route('outbox.index')->with('ok', '送信キューに登録しました');
+        return to_route('mail.outbox.index')->with('ok', '送信キューに登録しました');
     }
 
     public function show(MailOutbox $outbox)
