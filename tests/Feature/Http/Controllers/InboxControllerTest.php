@@ -45,4 +45,16 @@ class InboxControllerTest extends TestCase
             'is_read'    => 0,
         ]);
     }
+
+    public function test_update_toggles_read_flag():void{
+
+        $user = User::factory()->create();
+        $row = MailInbox::factory()->create(['is_read' => false]);
+
+        $this->actingAs($user)
+            ->patch(route('mail.inbox.update', $row))
+            ->assertRedirect(route('mail.inbox.index'));
+
+        $this->assertTrue($row->fresh()->is_read);
+    }
 }
