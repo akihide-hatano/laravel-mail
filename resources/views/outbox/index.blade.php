@@ -81,7 +81,7 @@
 
                         <td class="p-0">
                             <a href="{{ route('mail.outbox.show',$row)}}">
-                                {{ $row->status }}
+                                {{ $row->status->label() }}
                             </a>
                         </td>
                         <td class="p-2 whitespace-nowrap text-right w-40">

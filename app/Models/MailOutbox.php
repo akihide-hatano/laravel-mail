@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OutboxStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -26,9 +27,16 @@ class MailOutbox extends Model
         'provider_meta'
     ];
     protected $casts = [
+        'status'=>OutboxStatus::class,
         'queued_at'=>'datetime',
         'sent_at'=>'datetime',
         'failed_at'=>'datetime',
         'provider_meta'=>'array',
     ];
+
+    // 任意：日本語ラベルを楽に使うアクセサ
+    public function getStatusLabelAttribute(): string
+    {
+        return $this->status->label();
+    }
 }
