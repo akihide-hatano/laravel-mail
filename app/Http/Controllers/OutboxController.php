@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOutboxRequest;
+use App\Http\Requests\UpdateOutboxRequest;
 use App\Models\MailOutbox;
 use Illuminate\Http\Request;
 
@@ -47,16 +48,9 @@ class OutboxController extends Controller
         return view('outbox.edit',compact('outbox'));
     }
 
-    public function update(Request $request,MailOutbox $outbox){
-    
-    $data = $request->validate([
-        'to_email' => ['required','email'],
-        'subject'  => ['nullable','string','max:255'],
-        'body'     => ['nullable','string'],
-        'status'   => ['required','in:draft,queued,sent,failed'],
-    ]);
+    public function update(UpdateOutboxRequest $request,MailOutbox $outbox){
 
-        $outbox->fill($data)->save();
+        $outbox->update($request->validated());
         return to_route('mail.outbox.show',$outbox)->with('ok','更新しました');
     }
 }
