@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Enums\OutboxStatus;
 use App\Models\MailOutbox;
+use Illuminate\Support\Facades\Log;
 
 class UpdateOutboxRequest extends FormRequest
 {
@@ -15,10 +16,10 @@ class UpdateOutboxRequest extends FormRequest
     {
         $row = $this->route('outbox');
 
-    dump([
+    Log::debug('UpdateOutboxRequest authorize', [
         'exists' => (bool) $row,
         'id'     => $row?->id,
-        'status' => $row?->status?->value, // Enumキャストしてるなら value
+        'status' => $row?->status?->value,
     ]);
 
         return $row && in_array($row->status,[Outboxstatus::Draft],true);
