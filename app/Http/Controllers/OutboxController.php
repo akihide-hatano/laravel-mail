@@ -27,7 +27,7 @@ class OutboxController extends Controller
             'to_email'  => $data['to_email'],
             'subject'   => $data['subject'] ?? null,
             'body'      => $data['body'] ?? null,
-            'status'    => 'queued',
+            'status'    => OutboxStatus::Queued,
             'queued_at' => now(),
         ]);
 
