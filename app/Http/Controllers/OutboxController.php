@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OutboxStatus;
 use App\Http\Requests\StoreOutboxRequest;
 use App\Http\Requests\UpdateOutboxRequest;
 use App\Models\MailOutbox;
@@ -45,6 +46,8 @@ class OutboxController extends Controller
     }
 
     public function edit(MailOutbox $outbox){
+        // 画面遷移ガード（UIに出さなくても最終防衛）
+        abort_if($outbox->status !== OutboxStatus::Draft,403);
         return view('outbox.edit',compact('outbox'));
     }
 
