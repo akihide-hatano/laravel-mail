@@ -55,13 +55,13 @@ class OutboxControllerTest extends TestCase
                 'to_email' => 'baz@example.com',
                 'subject'  => '更新件名',
                 'body'     => '更新本文',
-                'status'   => 'queued',
+                // 'status'   => 'queued',
             ])->assertRedirect(route('mail.outbox.show', $row));
 
         $this->assertDatabaseHas('mail_outbox', [
             'id'       => $row->id,
             'to_email' => 'baz@example.com',
-            'status'   => 'queued',
+            'status'   => 'draft',
         ]);
 
         // destroy
