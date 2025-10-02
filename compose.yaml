@@ -59,9 +59,17 @@ services:
         depends_on:
             - pgsql
         networks: [sail]
+    mailpit:
+        image: axllent/mailpit:latest
+        ports:
+        - "1025:1025"  # SMTP
+        - "8025:8025"  # Web UI
+        networks:
+        - sail
 networks:
     sail:
         driver: bridge
 volumes:
     sail-pgsql:
         driver: local
+
