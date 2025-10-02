@@ -84,13 +84,22 @@
                                 {{ $row->status->label() }}
                             </a>
                         </td>
+
+                        {{-- @php
+                            use App\Enums\OutboxStatus;
+                        @endphp --}}
                         <td class="p-2 whitespace-nowrap text-right w-40">
                             <div class="inline-flex items-center gap-2">
                                 <a href="{{ route('mail.outbox.show',$row) }}"
                                 class="inline-flex items-center px-3 py-2 text-sm rounded bg-blue-600 text-white hover:bg-blue-500">
                                     詳細
                                 </a>
-                                <form method="POST" action="{{ route('mail.outbox.destroy', $row) }}" class="inline-block"
+                                @if
+                                <a href="{{ route('mail.outbox.edit'),$row}}" class="inline-flex items-center px-3 py-2 text-sm rounded border hover:bg-gray-100">
+                                    編集
+                                </a>
+                                @endif
+                                <form method="POST" action="{{ route('mail.outbox.destroy'), $row }}" class="inline-block"
                                     onsubmit="return confirm('削除しますか？');">
                                     @csrf @method('DELETE')
                                     <x-danger-button class="px-3 py-2 text-sm">削除</x-danger-button>
