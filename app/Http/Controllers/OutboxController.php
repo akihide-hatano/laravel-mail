@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\OutboxStatus;
 use App\Http\Requests\StoreOutboxRequest;
 use App\Http\Requests\UpdateOutboxRequest;
+use App\Jobs\SendOutboxMail;
 use App\Models\MailOutbox;
 use Illuminate\Http\Request;
 
@@ -26,13 +27,16 @@ class OutboxController extends Controller
 
         $data = $request->validated();
 
-        MailOutbox::create([
+        $row = MailOutbox::create([
             'to_email'  => $data['to_email'],
             'subject'   => $data['subject'] ?? null,
             'body'      => $data['body'] ?? null,
             'status'    => OutboxStatus::Queued,
             'queued_at' => now(),
         ]);
+
+        // ★ キュー投入（必要なら →delay(...) で予約送信）
+        SendOutboxMail::dispatch($row->id);
 
         // まずは保存のみ（送信は後で queue を差し込む）
         return to_route('mail.outbox.index')->with('ok', '送信キューに登録しました');
