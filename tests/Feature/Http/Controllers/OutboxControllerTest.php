@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\MailOutbox;
 use App\Models\User;
+use App\Enums\OutboxStatus;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
 
 class OutboxControllerTest extends TestCase
@@ -70,5 +71,21 @@ class OutboxControllerTest extends TestCase
             ->assertRedirect(route('mail.outbox.index'));
 
         $this->assertSoftDeleted('mail_outbox', ['id' => $row->id]);
+    }
+
+    public function test_edit_forbidden_when_not_draft():void{
+
+        $user = User::factory()->create();
+        $row = MailOutbox::factory()->create(['status'=>OutboxStatus::Queued]);
+
+        $this->actingAs($user)
+            ->get(route('mail.outbox.edit',$row))
+            ->assertForbidden();
+
+        $this->actingAs($user)
+            ->patch(route('mail.outbox.update',$row))
+            ->assertForbidden();
+
+        
     }
 }
