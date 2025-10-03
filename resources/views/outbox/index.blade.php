@@ -37,8 +37,12 @@
                 <table class="min-w-full text-sm">
                     <thead>
                         <tr>
-                            <th class="p-2"><input type="checkbox" id="checkAll"></th>
-                            <th>ID</th><th>宛先</th><th>件名</th><th>ステータス</th><th class="w-40 text-center">操作</th>
+                            <th class="p-2 w-10"><input type="checkbox" id="checkAll"></th>
+                            <th class="p-2 w-16">ID</th>
+                            <th class="p-2">宛先</th>
+                            <th class="p-2">件名</th>
+                            <th class="p-2 w-28">ステータス</th>  {{-- ★ ここに幅 --}}
+                            <th class="p-2 w-40 text-center">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -80,15 +84,13 @@
                             </a>
                         </td>
 
-                        <td class="p-0">
-                            <a href="{{ route('mail.outbox.show',$row)}}" class="{{ $row->status->colorClasses() }}">
-                                {{ $row->status->label() }}
+                        <td class="p-2 w-28"> {{-- ★ TH と同じ幅 --}}
+                            <a href="{{ route('mail.outbox.show',$row) }}"
+                            class="inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 whitespace-nowrap {{ $row->status->colorClasses() }}">
+                            {{ $row->status->label() }}
                             </a>
                         </td>
 
-                        {{-- @php
-                            use App\Enums\OutboxStatus;
-                        @endphp --}}
                         <td class="p-2 whitespace-nowrap text-right w-40">
                             <div class="inline-flex items-center gap-2">
                                 <a href="{{ route('mail.outbox.show',$row) }}"
