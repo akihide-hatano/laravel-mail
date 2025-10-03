@@ -77,6 +77,6 @@ class OutboxController extends Controller
 
         //softDeletesなので論理削除
         $count = MailOutbox::whereIn('id',$ids)->delete();
-        return back()->with('ok','{$count}件削除しました')
+        return back()->with('ok','{$count}件削除しました');
     }
 }
