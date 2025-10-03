@@ -38,7 +38,7 @@ class OutboxMail extends Mailable
     {
         return new Content(
             markdown: 'mail.outbox',
-            with:['outbx'=>$this->outbox];
+            with:['outbx'=>$this->outbox],
         );
     }
 
