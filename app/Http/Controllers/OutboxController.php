@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateOutboxRequest;
 use App\Jobs\SendOutboxMail;
 use App\Models\MailOutbox;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class OutboxController extends Controller
 {
@@ -67,9 +68,15 @@ class OutboxController extends Controller
     }
 
     //選択削除
-    public function bulkDestory(Request $request){
+    public function bulkDestroy(Request $request){
+
+        dd([
+            'all'        => $request->all(),          // 送られてきた全部
+            'ids_raw'    => $request->input('ids'),   // そのままの ids
+            'ids_wrapped'=> Arr::wrap($request->input('ids')), // 配列にラップした形
+        ]);
         //チェックされたid[]
-        $ids = array_filter((array) $request->input('ids'.[]),'is_numeric');
+        $ids = array_filter((array)$request->input('ids'.[]),'is_numeric');
 
         if(empty($ids)){
             return back()->with('warn','対象が選択されていません');
