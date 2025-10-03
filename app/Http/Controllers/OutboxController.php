@@ -23,6 +23,7 @@ class OutboxController extends Controller
     public function create(){
         return view('outbox.create');
     }
+
     public function store(StoreOutboxRequest $request){
 
         $data = $request->validated();
