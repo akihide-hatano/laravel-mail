@@ -29,8 +29,9 @@
         </form>
 
         {{-- 一括削除 --}}
-        <form method="POST" action="{{ route('mail.outbox.bulk-destroy') }}">
+        <form id ="bulkForm" method="POST" action="{{ route('mail.outbox.bulk-destroy') }}">
             @csrf @method('DELETE')
+        </form>
 
             <div class="overflow-x-auto mt-3">
                 <table class="min-w-full text-sm">
@@ -52,7 +53,7 @@
                     @foreach($items as $row)
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-2 whitespace-nowrap">
-                            <input type="checkbox" name="ids[]" value="{{ $row->id }}" class="row-check">
+                            <input form ="bulkForm" type="checkbox" name="ids[]" value="{{ $row->id }}" class="row-check">
                         </td>
 
                         {{-- IDセル丸ごとクリック可能 --}}
@@ -112,14 +113,14 @@
                     @endif
                     </tbody>
                 </table>
-
                 <div class="mt-3 flex items-center justify-between">
-                    <div>{{ $items->links() }}</div>
-                    <x-danger-button onclick="this.closest('form').submit()">選択削除</x-danger-button>
+                <div>{{ $items->links() }}</div>
+                {{-- 一括削除の送信ボタン（bulkForm を submit） --}}
+                <x-danger-button type="submit" form="bulkForm" class="px-3 py-2 text-sm">
+                    選択削除
+                </x-danger-button>
                 </div>
-            </div>
-        </form>
-    </div>
+        </div>
 
     <script>
         const all = document.getElementById('checkAll');
