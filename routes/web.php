@@ -12,11 +12,10 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-
     $outboxRecent = MailOutbox::query()->latest()->take(5)->get();
-    $inboxRecent = MailInbox::query()->latest('receives_at')->take(5)->get();
+    $inboxRecent = MailInbox::query()->latest('received_at')->take(5)->get();
 
-    return view('dashbord',compact('outboxRecent','inboxRecent'));
+    return view('dashboard',compact('outboxRecent','inboxRecent'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
