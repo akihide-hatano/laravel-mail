@@ -70,13 +70,13 @@ class OutboxController extends Controller
     //選択削除
     public function bulkDestroy(Request $request){
 
-        dd([
-            'all'        => $request->all(),          // 送られてきた全部
-            'ids_raw'    => $request->input('ids'),   // そのままの ids
-            'ids_wrapped'=> Arr::wrap($request->input('ids')), // 配列にラップした形
-        ]);
         //チェックされたid[]
-        $ids = array_filter((array)$request->input('ids'.[]),'is_numeric');
+    $ids = collect(Arr::wrap($request->input('ids',[])))
+            ->filter(fn($v)=>is_numeric($v))
+            ->map(fn($v) => (int)$v)
+            ->unique()
+            ->values();
+
 
         if(empty($ids)){
             return back()->with('warn','対象が選択されていません');
