@@ -50,7 +50,7 @@ class DashboardTest extends TestCase
             }
         $expectedInboxIds = $inCreated->sortByDesc('received_at')->take(5)->pluck('id')->all();
 
-         $this->actingAs($user)
+        $this->actingAs($user)
             ->get(route('dashboard'))
             ->assertOk()
             // ビュー変数 outboxes が “5件” かつ “期待IDと一致” しているか
@@ -63,7 +63,5 @@ class DashboardTest extends TestCase
                 return $col->count() === 5
                     && $col->pluck('id')->all() === $expectedInboxIds;
             });
-
-
     }
 }
