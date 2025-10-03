@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\OutboxStatus;
 use App\Models\MailOutbox;
 use Illuminate\Bus\Queueable;                  // ← ここが正
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,11 +25,12 @@ class SendOutboxMail implements ShouldQueue
     {
         $row = MailOutbox::findOrFail($this->outboxId);
 
-        try {
-            Mail::raw($row->body ?? '(no body)', fn ($m) =>
-                $m->to($row->to_email)->subject($row->subject ?? '(no subject)')
-            );
+        // 二重送信ガード（queued のときだけ送る）
+        if($row->status !== OutboxStatus::Queued){
+            return;
+        }
 
+        try {
             $row->update([
                 'status'      => 'sent',
                 'sent_at'     => now(),
