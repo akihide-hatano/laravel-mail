@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header"><h2 class="font-semibold text-xl">送信BOX</h2></x-slot>
 
-    <div class="max-w-4xl mx-auto p-4 space-y-6">
+    <div class="max-w-6xl mx-auto p-4 space-y-6">
 
         {{-- キュー登録フォーム --}}
         <form method="POST" action="{{ route('mail.outbox.store') }}" class="space-y-3">
@@ -33,7 +33,7 @@
             @csrf @method('DELETE')
         </form>
 
-            <div class="overflow-x-auto mt-3">
+            <div class="mt-3 overflow-x-auto">
                 <table class="min-w-full text-sm table-fixed">
                     <thead>
                         <tr>
