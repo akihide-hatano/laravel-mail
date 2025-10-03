@@ -47,11 +47,6 @@ class OutboxController extends Controller
     {
         return view('outbox.show', compact('outbox'));
     }
-    public function destroy(MailOutbox $outbox){
-
-        $outbox->delete();
-        return to_route('mail.outbox.index')->with('ok', '削除しました');
-    }
 
     public function edit(MailOutbox $outbox){
         // 画面遷移ガード（UIに出さなくても最終防衛）
@@ -63,5 +58,25 @@ class OutboxController extends Controller
 
         $outbox->update($request->validated());
         return to_route('mail.outbox.show',$outbox)->with('ok','更新しました');
+    }
+
+    public function destroy(MailOutbox $outbox){
+
+        $outbox->delete();
+        return to_route('mail.outbox.index')->with('ok', '削除しました');
+    }
+
+    //選択削除
+    public function bulkDestory(Request $request){
+        //チェックされたid[]
+        $ids = array_filter((array) $request->input('ids'.[]),'is_numeric');
+
+        if(empty($ids)){
+            return back()->with('warn','対象が選択されていません');
+        }
+
+        //softDeletesなので論理削除
+        $count = MailOutbox::whereIn('id',$ids)->delete();
+        return back()->with('ok','{$count}件削除しました')
     }
 }
