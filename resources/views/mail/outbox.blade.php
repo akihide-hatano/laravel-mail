@@ -1,11 +1,13 @@
 <x-mail::message>
-# Introduction
+# {{ $outbox->subject -> '(件名なし)'}}
+{!! nl2br(e($outbox->body ?? '（本文なし）')) !!}
 
-The body of your message.
-
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
+<x-mail::panel>
+宛先：{{ $outbox->to_email }}
+@isset($outbox->sent_at)
+送信日時：{{ $outbox->sent_at->format('Y-m-d H:i') }}
+@endisset
+</x-mail::panel>
 
 Thanks,<br>
 {{ config('app.name') }}
