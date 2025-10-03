@@ -34,13 +34,13 @@
         </form>
 
             <div class="overflow-x-auto mt-3">
-                <table class="min-w-full text-sm">
+                <table class="min-w-full text-sm table-fixed">
                     <thead>
                         <tr>
                             <th class="p-2 w-10"><input type="checkbox" id="checkAll"></th>
                             <th class="p-2 w-16">ID</th>
-                            <th class="p-2">宛先</th>
-                            <th class="p-2">件名</th>
+                            <th class="p-2 w-[18rem]">宛先</th>
+                            <th class="p-2 w-[24rem]">件名</th>
                             <th class="p-2 w-28">ステータス</th>  {{-- ★ ここに幅 --}}
                             <th class="p-2 w-40 text-center">操作</th>
                         </tr>
@@ -69,7 +69,7 @@
                         </td>
 
                         {{-- 宛先セルもクリック可能 --}}
-                        <td class="p-0">
+                        <td class="p-0 w-[18rem]">
                             <a href="{{ route('mail.outbox.show', $row) }}"
                             class="block px-2 py-2 truncate">
                                 {{ $row->to_email }}
@@ -77,7 +77,7 @@
                         </td>
 
                         {{-- 件名セルもクリック可能 --}}
-                        <td class="p-0">
+                        <td class="p-0 w-[24rem]">
                             <a href="{{ route('mail.outbox.show', $row) }}"
                             class="block px-2 py-2 truncate">
                                 {{ $row->subject }}
