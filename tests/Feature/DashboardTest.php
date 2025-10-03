@@ -37,7 +37,7 @@ class DashboardTest extends TestCase
             );
         }
         // “最新5件”の想定（id なら末尾5件、created_at desc で上位5件）
-        $expectedOutboxIds = $outCreadted->sortByDesc('received_at')->take(5)->pluck('id')->all();
+        $expectedOutboxIds = $outCreadted->sortByDesc('created_at')->take(5)->pluck('id')->all();
         
         //Inboxを7件作成
         $inCreated = collect();
