@@ -4,13 +4,19 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OutboxController;
 use App\Http\Controllers\InboxController;
+use App\Models\MailInbox;
+use App\Models\MailOutbox;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+
+    $outboxRecent = MailOutbox::query()->latest()->take(5)->get();
+    $inboxRecent = MailInbox::query()->latest('receives_at')->take(5)->get();
+
+    return view('dashbord',compact('outboxRecent','inboxRecent'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
