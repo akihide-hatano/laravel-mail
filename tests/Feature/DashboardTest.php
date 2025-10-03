@@ -54,12 +54,12 @@ class DashboardTest extends TestCase
             ->get(route('dashboard'))
             ->assertOk()
             // ビュー変数 outboxes が “5件” かつ “期待IDと一致” しているか
-            ->assertViewHas('outboxes', function ($col) use ($expectedOutboxIds) {
+            ->assertViewHas('outboxRecent', function ($col) use ($expectedOutboxIds) {
                 return $col->count() === 5
                     && $col->pluck('id')->all() === $expectedOutboxIds;
             })
             // ビュー変数 inboxes も同様に
-            ->assertViewHas('inboxes', function ($col) use ($expectedInboxIds) {
+            ->assertViewHas('inboxRecent', function ($col) use ($expectedInboxIds) {
                 return $col->count() === 5
                     && $col->pluck('id')->all() === $expectedInboxIds;
             });
