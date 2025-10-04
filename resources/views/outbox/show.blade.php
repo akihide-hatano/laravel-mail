@@ -2,15 +2,15 @@
   <x-slot name="header"><h2 class="font-semibold text-xl">送信メール 詳細</h2></x-slot>
 
   <div class="max-w-3xl mx-auto p-4 space-y-4">
-    <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg p-4">
-      <table class="w-full text-sm border border-gray-200 border-collapse">
-        <tbody>
+    <div class="bg-white shadow-sm ring-1 ring-gray-400 rounded-lg p-4">
+      <table class="w-full text-sm border  border-gray-600">
+        <tbody class="border  border-gray-600">
           <tr class="odd:bg-gray-50">
-            <th class="w-28 p-2 text-left align-top border border-gray-200 bg-gray-50">ID</th>
+            <th class="w-28 p-2 text-left align-top border  border-gray-200 bg-gray-50">ID</th>
             <td class="p-2 border border-gray-200">{{ $outbox->id }}</td>
           </tr>
           <tr class="odd:bg-gray-50">
-            <th class="p-2 text-left align-top border border-gray-200 bg-gray-50">宛先</th>
+            <th class="p-2 text-left align-top border ring-2 ring-gray-200 bg-gray-50">宛先</th>
             <td class="p-2 border border-gray-200">{{ $outbox->to_email }}</td>
           </tr>
           <tr class="odd:bg-gray-50">
