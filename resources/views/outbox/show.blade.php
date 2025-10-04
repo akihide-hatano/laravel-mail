@@ -41,7 +41,7 @@
 
     <div class="flex gap-2">
       <a href="{{ route('mail.outbox.index') }}"
-         class="inline-flex items-center px-3 py-2 rounded ring-1 ring-gray-600 hover:bg-gray-100">
+         class="inline-flex items-center px-3 py-2 rounded ring-1 ring-gray-600 hover:bg-gray-400">
         一覧へ
       </a>
 
