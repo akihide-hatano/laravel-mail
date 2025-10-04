@@ -7,7 +7,7 @@
         <dt class="font-semibold col-span-1">宛先</dt><dd class="col-span-3">{{ $outbox->to_email }}</dd>
         <dt class="font-semibold col-span-1">件名</dt><dd class="col-span-3">{{ $outbox->subject }}</dd>
         <dt class="font-semibold col-span-1">本文</dt><dd class="col-span-3 whitespace-pre-wrap">{{ $outbox->body }}</dd>
-        <dt class="font-semibold col-span-1">ステータス</dt><dd class="col-span-3">{{ $outbox->status }}</dd>
+        <dt class="font-semibold col-span-1">ステータス</dt><dd class="col-span-3 status->colorClasses()">{{ $outbox->status->label() }}</dd>
         <dt class="font-semibold col-span-1">登録</dt><dd class="col-span-3">{{ optional($outbox->created_at)->format('Y-m-d H:i') }}</dd>
       </dl>
     </div>
